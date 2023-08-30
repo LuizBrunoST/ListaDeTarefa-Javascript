@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas Simples</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/padrao.css">
+    <script src="js/jquery-3.6.0.min.js"></script>
+</head>
+<body class="w3-light-gray">
+    <div class="w3-modal" id="modalCadLista">
+        <div class="w3-modal-content w3-animate-top">
+            <div class="w3-bar w3-blue">
+                <span class="w3-bar-item w3-font-bold">Lista De Tarefas</span>
+
+                <span class="w3-bar-item w3-right w3-button w3-red" onclick="$('#modalCadLista').hide()"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            <div class="w3-container">
+                <div class="w3-row">
+                    <div class="w3-third w3-padding">
+                        <input type="text" id="taskInput" class="w3-input" placeholder="Digite uma nova tarefa">
+                    </div>
+                    <div class="w3-third w3-padding">
+                        <input type="date" id="dueDateInput" class="w3-input" placeholder="Data de Previsão">
+                    </div>
+                </div>
+            </div>
+            <div class="w3-bar w3-padding w3-light-gray">
+                <div class="w3-right">
+                    <a class="w3-button w3-round w3-red" href="javascript:void(0)" onclick="$('#modalCadLista').hide()">Cancelar</a>
+                    <button id="addTaskBtn" class="w3-button w3-round w3-blue">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <div class="w3-bar w3-blue">
+        <span class="w3-bar-item w3-font-bold">LISTA DE TAREFAS</span>
+        <div class="w3-right">
+            <a class="w3-bar-item w3-button" onclick="$('#modalCadLista').show()" href="javascript:void(0)"><i class="fa-solid fa-list-check"></i></a>
+        </div>
+    </div>
+    <div class="w3-container">
+        <h4>Lista</h4>
+        <ul class="w3-ul w3-white" id="taskList"></ul>
+    </div>
+
+    <script src="js/toast.class.js"></script>
+    <script src="js/taskList.js"></script>
+</body>
+</html>

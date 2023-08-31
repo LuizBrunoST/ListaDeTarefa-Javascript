@@ -32,7 +32,7 @@ const taskInput = document.getElementById('taskInput');
                 li.innerHTML = `
                     <input class="w3-check" type="checkbox" id="check-${index}" ${task.completed ? 'checked' : ''}>
                     <span><span class="w3-font-bold">${task.description}</span> <i>(Data de Previsão: ${task.dueDate})</i></span>
-                    <span>${isOverdue ? '<span class="w3-tag w3-red w3-round">Atrasada</span>' : ''}</span>
+                    <span>${isOverdue ? '<span class="w3-tag w3-red w3-round">Atrasado</span>' : ''}</span>
                     <button class="w3-button w3-round w3-blue" id="edit-${index}"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="w3-button w3-round w3-text-red w3-hover-red" id="delete-${index}"><i class="fa-solid fa-trash"></i></button>
                 `;

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/padrao.css">
+    <script src="js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+
+    <input type="text" id="taskInput" placeholder="Digite uma nova tarefa">
+    <input type="datetime-local" id="dueDateInput">
+    <button id="addTaskBtn">Adicionar</button>
+
+    <ul class="w3-ul" id="taskList"></ul>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const dueDateInput = document.getElementById('dueDateInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+
+        addTaskBtn.addEventListener('click', () => {
+            const description = taskInput.value;
+            const dueDate = dueDateInput.value;
+            if (description.trim() !== '' && dueDate !== '') {
+                addTask(description, dueDate);
+                updateTaskList();
+                taskInput.value = '';
+                dueDateInput.value = '';
+            }
+        });
+
+        function addTask(description, dueDate) {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push({ description, dueDate, completed: false, completedDate: null });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function formatDateTime(dateTimeString) {
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+            return new Intl.DateTimeFormat('pt-BR', options).format(new Date(dateTimeString));
+        }
+
+        function updateTaskList() {
+            taskList.innerHTML = '';
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const currentDate = new Date();
+            tasks.forEach((task, index) => {
+                const dueDate = new Date(task.dueDate);
+                const isOverdue = dueDate < currentDate && !task.completed;
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <input type="checkbox" id="check-${index}" ${task.completed ? 'checked' : ''}>
+                    <span>${task.description} (Data de Previsão: ${formatDateTime(task.dueDate)})</span>
+                    <button id="edit-${index}">Editar</button>
+                    <button id="delete-${index}">Excluir</button>
+                    <span>${isOverdue ? 'Atrasada' : ''}</span>
+                `;
+                taskList.appendChild(li);
+
+                const checkbox = document.getElementById(`check-${index}`);
+                checkbox.addEventListener('change', () => {
+                    tasks[index].completed = checkbox.checked;
+                    tasks[index].completedDate = checkbox.checked ? new Date().toISOString() : null;
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    updateTaskList();
+                });
+
+                const editBtn = document.getElementById(`edit-${index}`);
+                editBtn.addEventListener('click', () => {
+                    const newDescription = prompt('Digite a nova descrição:', tasks[index].description);
+                    if (newDescription !== null) {
+                        tasks[index].description = newDescription;
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        updateTaskList();
+                    }
+                });
+
+                const deleteBtn = document.getElementById(`delete-${index}`);
+                deleteBtn.addEventListener('click', () => {
+                    tasks.splice(index, 1);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    updateTaskList();
+                });
+            });
+        }
+
+        updateTaskList();
+    </script>
+</body>
+</html>

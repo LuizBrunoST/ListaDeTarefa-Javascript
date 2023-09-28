@@ -9,15 +9,43 @@
     <link rel="stylesheet" href="css/padrao.css">
     <script src="js/jquery-3.6.0.min.js"></script>
 </head>
-<body>
-    <h1>Lista de Tarefas</h1>
-
-    <input type="text" id="taskInput" placeholder="Digite uma nova tarefa">
-    <input type="datetime-local" id="dueDateInput">
-    <button id="addTaskBtn">Adicionar</button>
-
-    <ul class="w3-ul" id="taskList"></ul>
-
+<body class="w3-light-gray">
+    <div class="w3-bar">
+        <div class="w3-content">
+            <div class="w3-bar-item">
+                <span class="w3-large w3-font-bold">Lista de Tarefas</span><br>
+                <i class="w3-small">Organize a suas Tarefas.</i>
+            </div>
+            <div class="w3-right w3-padding">
+                <a class="w3-bar-item w3-button" onclick="$('#modalCadLista').show()" href="javascript:void(0)"><i class="fa-solid fa-list-check"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="w3-modal" id="modalCadLista">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <label for="taskInput">Tarefa:</label>
+                <input class="w3-input" type="text" id="taskInput" placeholder="Digite uma nova tarefa">
+                <label for="dueDateInput">Previsão:</label>
+                <input class="w3-input" type="datetime-local" id="dueDateInput">
+            </div>
+            <div class="w3-bar w3-padding w3-light-gray">
+                <div class="w3-right">
+                    <a class="w3-button w3-round w3-red" onclick="$('#modalCadLista').hide()" href="javascript:void(0)">Cancelar</a>
+                    <button class="w3-button w3-blue w3-round" id="addTaskBtn">Adicionar</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+<div class="w3-container">
+    <ul class="w3-ul w3-white" id="taskList"></ul>
+</div>
+    
+    <script src="js/toast.class.js"></script>
     <script>
         const taskInput = document.getElementById('taskInput');
         const dueDateInput = document.getElementById('dueDateInput');
@@ -55,12 +83,14 @@
                 const isOverdue = dueDate < currentDate && !task.completed;
 
                 const li = document.createElement('li');
+                li.classList.add("w3-bar");
                 li.innerHTML = `
-                    <input type="checkbox" id="check-${index}" ${task.completed ? 'checked' : ''}>
-                    <span>${task.description} (Data de Previsão: ${formatDateTime(task.dueDate)})</span>
-                    <button id="edit-${index}">Editar</button>
-                    <button id="delete-${index}">Excluir</button>
-                    <span>${isOverdue ? 'Atrasada' : ''}</span>
+                    <label class="w3-bar-item w3-xxlarge" for="check-${index}">${task.completed ? '<span class="w3-text-green"><i class="fa-solid fa-circle-check"></i></span>' : '<span class="w3-text-yellow"><i class="fa-solid fa-check"></i></span>'}</label>
+                    <input style="display:none;" class="w3-bar-item w3-check w3-xxlarge" type="checkbox" id="check-${index}" ${task.completed ? 'checked' : ''}>
+                    <span class="w3-bar-item"><b>${task.description}</b><br><i>Previsão: ${formatDateTime(task.dueDate)}</i></span>
+                    <button class="w3-bar-item w3-button w3-blue" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button class="w3-bar-item w3-button w3-red" id="delete-${index}"><i class="fa-solid fa-trash"></i></button>
+                    <span class="w3-bar-item">${isOverdue ? '<span class="w3-tag w3-pale-red w3-text-red w3-border w3-border-red w3-round">Atrasado</span>' : ''}</span>
                 `;
                 taskList.appendChild(li);
 
